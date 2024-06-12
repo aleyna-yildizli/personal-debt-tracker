@@ -7,10 +7,40 @@ import {
 import WithAuth from "../components/WithAuth";
 
 const PaymentPlan = () => {
+  const selectedDebt = useSelector((state) => state.debts.selectedDebt);
   const paymentPlan = useSelector((state) => state.debts.paymentPlan);
+  console.log("PAYMENT PLAN:", paymentPlan);
   const dispatch = useDispatch();
 
-  if (!selectedDebt || !selectedDebt.paymentPlan) {
+  useEffect(() => {
+    const sid = localStorage.getItem("sid");
+    if (sid !== null && sid !== "") {
+      dispatch(fetchPaymentPlans(sid));
+    } else if (selectedDebt) {
+      dispatch(fetchPaymentPlans(selectedDebt.id));
+      localStorage.setItem("sid", selectedDebt.id);
+    }
+  }, [selectedDebt, dispatch]);
+
+  const handlePaymentStatusChange = (
+    paymentDate,
+    paymentAmount,
+    paymentPlanId,
+    isPaid
+  ) => {
+    console.log("PaymentPlanId:", paymentPlanId, "isPaid:", isPaid);
+    dispatch(
+      updatePaymentStatus(
+        selectedDebt.id,
+        paymentDate,
+        paymentAmount,
+        paymentPlanId,
+        isPaid
+      )
+    );
+  };
+
+  if (!selectedDebt) {
     return (
       <div className="flex justify-center text-center">
         Ödeme planı bulunmamaktadır
@@ -18,26 +48,13 @@ const PaymentPlan = () => {
     );
   }
 
-  useEffect(() => {
-    // Ödeme planlarını çekmek ve console'a yazdırmak
-    const debtId = "66696f36db37bd9dfa33bd91";
-    dispatch(fetchPaymentPlans(debtId)).then((paymentPlans) => {
-      console.log("Fetched Payment Plans:", paymentPlans);
-    });
-  }, [dispatch]);
-
-  const handlePaymentStatusChange = (paymentPlanId, isPaid) => {
-    console.log("PaymentPlanId:", paymentPlanId, "isPaid:", isPaid); // Debugging line
-    dispatch(updatePaymentStatus(paymentPlan.id, paymentPlanId, isPaid));
-  };
-
   return (
     <div className="w-full h-full flex flex-col items-center">
       <h1 className="text-4xl font-bold my-6">Ödeme Planı</h1>
       <div className="w-full max-w-4xl bg-gray-100 p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4">{paymentPlan.debtName}</h2>
+        <h2 className="text-xl font-semibold mb-4">{selectedDebt.debtName}</h2>
         <div className="space-y-4">
-          {paymentPlan.data.map((plan, index) => {
+          {paymentPlan.map((plan, index) => {
             console.log("Plan ID:", plan.id);
             return (
               <div
@@ -63,7 +80,12 @@ const PaymentPlan = () => {
                     type="checkbox"
                     checked={plan.isPaid}
                     onChange={() =>
-                      handlePaymentStatusChange(plan.id, !plan.isPaid)
+                      handlePaymentStatusChange(
+                        plan.paymentDate,
+                        plan.paymentAmount,
+                        plan.id,
+                        !plan.isPaid
+                      )
                     }
                     className="form-checkbox h-5 w-5 text-green-500"
                   />

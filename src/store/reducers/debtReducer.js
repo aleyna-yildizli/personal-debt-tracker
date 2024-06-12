@@ -1,8 +1,10 @@
-import { ADD_DEBT, UPDATE_DEBT, SET_SELECTED_DEBT, FETCH_DEBTS, UPDATE_PAYMENT_STATUS } from '../actions/debtActions';
+import { ADD_DEBT, UPDATE_DEBT, SET_SELECTED_DEBT, FETCH_DEBTS, UPDATE_PAYMENT_STATUS, FETCH_PAYMENT_PLANS } from '../actions/debtActions';
 
 const initialState = {
   debts: [],
+  paymentPlan: [],
   selectedDebt: null,
+ 
 };
 
 const debtReducer = (state = initialState, action) => {
@@ -24,6 +26,11 @@ const debtReducer = (state = initialState, action) => {
         ...state,
         selectedDebt: action.payload,
       };
+    case FETCH_PAYMENT_PLANS:
+      return {
+        ...state,
+        paymentPlan: action.payload.data,
+        };
     case FETCH_DEBTS:
       return {
         ...state,

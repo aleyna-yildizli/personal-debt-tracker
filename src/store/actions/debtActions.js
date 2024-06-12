@@ -25,27 +25,28 @@ export const setSelectedDebt = (debt) => ({
 
 export const fetchPaymentPlans = (debtId) => async (dispatch) => {
     try {
-      const response = await API.get(`/finance/payment-plans/${debtId}`);
-      dispatch({ type: FETCH_PAYMENT_PLANS, payload: { debtId, paymentPlans: response.data.data } });
-      console.log("Fetched Payment Plans: ", response.data);
+      const response = await API.get(`finance/payment-plans/${debtId}`);
+      dispatch({ type: FETCH_PAYMENT_PLANS, payload: response.data });
+      console.log("Fetched Payment Plans: ", response.data); // Veriyi consola yazdır
+      return response.data; // Veriyi döndür
     } catch (error) {
       console.error('Error fetching payment plans:', error);
     }
   };
 
-
 // Ödeme durumu güncelleme işlemi
-export const updatePaymentStatus = (debtId, paymentPlanId, isPaid) => async (dispatch, getState) => {
+export const updatePaymentStatus = (debtId, paymentDate, paymentAmount, paymentPlanId, isPaid) => async (dispatch, getState) => {
+    const state = getState();
+    const selectedDebt = state.debts.debts.find(debt => debt.id === debtId);
+    const paymentPlan = selectedDebt.paymentPlan.find(plan => plan.id === paymentPlanId); //TODO try içine al
+    console.log("update payment plannnn:", paymentPlan);
     try {
-      const state = getState();
-      const selectedDebt = state.debts.debts.find(debt => debt.id === debtId);
-      const paymentPlan = selectedDebt.paymentPlan.find(plan => plan.id === paymentPlanId);
       const payload = {
-        paymentDate: paymentPlan.paymentDate,
-        paymentAmount: paymentPlan.paymentAmount,
+        paymentDate: paymentDate,
+        paymentAmount: paymentAmount,
         isPaid: isPaid,
       };
-  
+      console.log("update payment plannnn:", paymentPlan);
       console.log("Updating Payment Status for:", paymentPlanId, "with payload:", payload); // Debugging line
   
       await API.put(`/finance/payment-plans/${paymentPlanId}`, payload);
