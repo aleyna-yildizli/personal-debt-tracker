@@ -17,6 +17,8 @@ const Debts = () => {
   const dispatch = useDispatch();
 
   const handleViewPaymentPlan = (debt) => {
+    // Sorun bu kısımda başlıyor(kendime not)
+    console.log("Selected Debt:", debt); // Console log ekledik
     dispatch(setSelectedDebt(debt));
     history.push(`/payment-plan`);
   };

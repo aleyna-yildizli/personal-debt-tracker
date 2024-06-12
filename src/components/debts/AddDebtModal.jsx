@@ -95,7 +95,7 @@ const AddDebtModal = ({ isOpen, toggle, isEdit }) => {
         paymentPlan.push({
           paymentDate: paymentDate.toISOString(),
           paymentAmount: paymentAmount,
-          isPaid: false, // Add default isPaid value
+          isPaid: false,
         });
       }
 

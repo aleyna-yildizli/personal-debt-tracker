@@ -5,6 +5,7 @@ export const UPDATE_DEBT = 'UPDATE_DEBT';
 export const SET_SELECTED_DEBT = 'SET_SELECTED_DEBT';
 export const FETCH_DEBTS = 'FETCH_DEBTS';
 export const UPDATE_PAYMENT_STATUS = 'UPDATE_PAYMENT_STATUS';
+export const FETCH_PAYMENT_PLANS = "FETCH_PAYMENT_PLANS";
 
 // Borç ekleme eylemi
 export const addDebtAction = (debt) => ({
@@ -20,6 +21,18 @@ export const updateDebtAction = (debt) => ({
 export const setSelectedDebt = (debt) => ({
   type: SET_SELECTED_DEBT, payload: debt,
 });
+
+
+export const fetchPaymentPlans = (debtId) => async (dispatch) => {
+    try {
+      const response = await API.get(`/finance/payment-plans/${debtId}`);
+      dispatch({ type: FETCH_PAYMENT_PLANS, payload: { debtId, paymentPlans: response.data.data } });
+      console.log("Fetched Payment Plans: ", response.data);
+    } catch (error) {
+      console.error('Error fetching payment plans:', error);
+    }
+  };
+
 
 // Ödeme durumu güncelleme işlemi
 export const updatePaymentStatus = (debtId, paymentPlanId, isPaid) => async (dispatch, getState) => {
