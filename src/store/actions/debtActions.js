@@ -1,5 +1,7 @@
 import { API } from '../../api';
+import { fetchFailure, fetchRequest, fetchSuccess } from './fetchActions';
 
+export const SET_LOADING = 'SET_LOADING';
 export const ADD_DEBT = 'ADD_DEBT';
 export const UPDATE_DEBT = 'UPDATE_DEBT';
 export const SET_SELECTED_DEBT = 'SET_SELECTED_DEBT';
@@ -7,17 +9,24 @@ export const FETCH_DEBTS = 'FETCH_DEBTS';
 export const UPDATE_PAYMENT_STATUS = 'UPDATE_PAYMENT_STATUS';
 export const FETCH_PAYMENT_PLANS = "FETCH_PAYMENT_PLANS";
 
-// Borç ekleme eylemi
+
+// merkezi loading
+export const setLoading = (isLoading) => ({
+    type: SET_LOADING,
+    payload: isLoading,
+  });
+
+// BORÇ EKLEME EYLEMİ
 export const addDebtAction = (debt) => ({
   type: ADD_DEBT, payload: debt,
 });
 
-// Borç güncelleme eylemi
+// BORÇ GÜNCELLEME EYLEMİ
 export const updateDebtAction = (debt) => ({
   type: UPDATE_DEBT, payload: debt,
 });
 
-// Seçili borcu ayarlama eylemi
+// SEÇİLİ BORCU AYARLAMA EYLEMİ
 export const setSelectedDebt = (debt) => ({
   type: SET_SELECTED_DEBT, payload: debt,
 });
@@ -34,7 +43,7 @@ export const fetchPaymentPlans = (debtId) => async (dispatch) => {
     }
   };
 
-// Ödeme durumu güncelleme işlemi
+// ÖDEME DURUMUNU GÜNCELLE(isPaid)
 export const updatePaymentStatus = (debtId, paymentDate, paymentAmount, paymentPlanId, isPaid) => async (dispatch, getState) => {
     try {
       const state = getState();
@@ -45,12 +54,7 @@ export const updatePaymentStatus = (debtId, paymentDate, paymentAmount, paymentP
         paymentAmount: paymentAmount,
         isPaid: isPaid,
       };
-  
-      console.log("Update payment plan:", paymentPlan);
-      console.log("Updating Payment Status for:", paymentPlanId, "with payload:", payload);
-  
       await API.put(`finance/payment-plans/${paymentPlanId}`, payload);
-  
       dispatch({
         type: UPDATE_PAYMENT_STATUS,
         payload: { debtId, paymentPlanId, isPaid }
@@ -62,44 +66,55 @@ export const updatePaymentStatus = (debtId, paymentDate, paymentAmount, paymentP
 
 // BORÇLARI GETİR
 export const fetchDebts = () => async (dispatch) => {
+    dispatch(fetchRequest());
     try {
       const response = await API.get('/finance/debt');
-      const debtsWithPaymentPlan = response.data.data.map(debt => {
+      const debtsWithPaymentPlan = await Promise.all(response.data.data.map(async (debt) => {
+        const paymentPlansResponse = await API.get(`finance/payment-plans/${debt.id}`);
         const paymentPlan = calculatePaymentPlan(
           debt.debtAmount,
           debt.amount,
           debt.paymentStart,
           debt.installment,
-          debt.paymentPlan
+          paymentPlansResponse.data.data
         );
         return {
           ...debt,
           paymentPlan
         };
-      });
-      dispatch({ type: FETCH_DEBTS, payload: debtsWithPaymentPlan });
-      console.log("Fetched Debts: ", response.data);
+      }));
+      dispatch(fetchSuccess(debtsWithPaymentPlan));
+      console.log("Fetched Debts: ", debtsWithPaymentPlan);
     } catch (error) {
       console.error('Error fetching debts:', error);
+      dispatch(fetchFailure(error));
     }
   };
 
-// Ödeme planı hesaplama fonksiyonu
-const calculatePaymentPlan = (debtAmount, amount, paymentStart, installment) => {
+  // ÖDEME PLANINI HESAPLA
+const calculatePaymentPlan = (debtAmount, amount, paymentStart, installment, existingPaymentPlan = []) => {
     const paymentPlan = [];
     const monthlyAmount = amount / installment;
+  
     for (let i = 0; i < installment; i++) {
       const paymentDate = new Date(paymentStart);
       paymentDate.setMonth(paymentDate.getMonth() + i);
+  
+      const existingPayment = existingPaymentPlan.find(plan => 
+        new Date(plan.paymentDate).toISOString() === paymentDate.toISOString()
+      );
+  
       paymentPlan.push({
         paymentDate: paymentDate.toISOString(),
         paymentAmount: monthlyAmount,
+        isPaid: existingPayment ? existingPayment.isPaid : false
       });
     }
+  
     return paymentPlan;
   };
 
-// Borç ekleme iş mantığı
+// BORÇ EKLE
 export const addDebt = (data) => async (dispatch) => {
     const paymentPlan = calculatePaymentPlan(
       data.debtAmount,
@@ -126,7 +141,7 @@ export const addDebt = (data) => async (dispatch) => {
     }
   };
 
-// Borç güncelleme iş mantığı
+// BORÇ GÜNCELLE
 export const updateDebt = (debtId, data) => async (dispatch) => {
     const paymentPlan = calculatePaymentPlan(
       data.debtAmount,
@@ -146,7 +161,7 @@ export const updateDebt = (debtId, data) => async (dispatch) => {
   
     try {
       const response = await API.put(`finance/debt/${debtId}`, postData);
-      console.log("Update Debt Response: ", response.data);
+      //console.log("Update Debt Response: ", response.data);
       dispatch(fetchDebts());
     } catch (error) {
       console.error('Error updating debt:', error);

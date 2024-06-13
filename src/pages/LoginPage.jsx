@@ -44,7 +44,7 @@ export default function LoginPage() {
       console.error(
         "Login error: ",
         error.response ? error.response.data : error.message
-      ); // Hata mesajını konsola yazdırın
+      );
       toast.error(
         error.response ? error.response.data.message : error.message,
         {

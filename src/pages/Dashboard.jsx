@@ -1,21 +1,40 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchDebts } from "../store/actions/debtActions";
 import WithAuth from "../components/WithAuth";
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
   const debts = useSelector((state) => state.debts.debts);
+  const isLoading = useSelector((state) => state.debts.isLoading);
 
-  const totalDebt = debts.reduce((total, debt) => total + debt.debtAmount, 0);
-  const paidDebt = debts.reduce(
-    (total, debt) =>
-      total +
-      debt.paymentPlan
-        .filter((payment) => payment.isPaid)
-        .reduce((sum, payment) => sum + payment.paymentAmount, 0),
-    0
-  );
+  useEffect(() => {
+    if (debts.length === 0) {
+      dispatch(fetchDebts());
+    }
+  }, [dispatch, debts]);
 
-  console.log(debts);
+  if (isLoading) {
+    return (
+      <div className="flex justify-center mt-4 text-4xl font-bold text-gray-600 ">
+        Loading...
+      </div>
+    );
+  }
+
+  const totalDebt = debts.reduce((total, debt) => total + debt.amount, 0);
+
+  const paidDebt = debts.reduce((total, debt) => {
+    const paidAmount = debt.paymentPlan
+      .filter((payment) => payment.isPaid)
+      .reduce((sum, payment) => sum + payment.paymentAmount, 0);
+    return total + paidAmount;
+  }, 0);
+
+  //console.log("Debts:", debts);
+  //console.log("Total Debt:", totalDebt);
+  //console.log("Paid Debt:", paidDebt);
+
   const upcomingPayments = debts
     .flatMap((debt) => debt.paymentPlan)
     .filter(
@@ -40,11 +59,15 @@ const Dashboard = () => {
         <div className="w-full max-w-4xl flex flex-wrap justify-between gap-4">
           <div className="w-full md:w-1/3 bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-semibold">Toplam Borç</h2>
-            <p className="text-2xl font-bold">{totalDebt.toFixed(2)} ₺</p>
+            <p className="text-2xl font-bold text-red-600">
+              {totalDebt.toFixed(2)} ₺
+            </p>
           </div>
           <div className="w-full md:w-1/3 bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-semibold">Ödenen Borç</h2>
-            <p className="text-2xl font-bold">{paidDebt.toFixed(2)} ₺</p>
+            <p className="text-2xl font-bold text-green-500">
+              {paidDebt.toFixed(2)} ₺
+            </p>
           </div>
           <div className="w-full md:w-1/2 bg-white p-2 rounded-lg shadow-md">
             <h2 className="text-xl font-semibold flex text-center">
@@ -59,10 +82,6 @@ const Dashboard = () => {
               ))}
             </ul>
           </div>
-        </div>
-
-        <div className="w-full max-w-4xl mt-8 bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Borç Durumu Grafiği</h2>
         </div>
       </div>
     </div>

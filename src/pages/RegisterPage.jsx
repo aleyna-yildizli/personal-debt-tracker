@@ -25,20 +25,20 @@ export default function RegisterPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const onSubmit = async (data) => {
-    setIsLoading(true); // Form gönderimi başladığında isLoading'i true yapın
+    setIsLoading(true);
     const payload = {
       name: data.name,
       email: data.email,
       password: data.password,
     };
-    console.log("Payload:", payload); // Gönderilen veriyi konsola yazdırın
+    console.log("Payload:", payload);
     try {
       const response = await API.post("/auth/register", payload);
       console.log("Response:", response);
-      localStorage.setItem("token", response.data.token); // Token'ı kaydedin
-      renewAPI(); // API nesnesini yenileyin
+      localStorage.setItem("token", response.data.token);
+      renewAPI();
       setIsSubmitted(true);
-      history.push("/login"); // Başarılı kayıt sonrası yönlendirme
+      history.push("/login");
     } catch (error) {
       console.error(
         "An error occurred while submitting the form. Please try again."
@@ -148,7 +148,7 @@ export default function RegisterPage() {
             </div>
             <button
               type="submit"
-              disabled={isLoading || isSubmitted} // isLoading true veya isSubmitted true olduğunda butonu disabled yap
+              disabled={isLoading || isSubmitted}
               className={`w-full py-2.5 bg-sky-500 text-lg text-white rounded-lg font-semibold${
                 isSubmitted ? "" : "hover:scale-105"
               } ${!isValid || isLoading ? " cursor-not-allowed" : ""}`}

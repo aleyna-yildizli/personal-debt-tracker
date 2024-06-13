@@ -17,8 +17,6 @@ const Debts = () => {
   const dispatch = useDispatch();
 
   const handleViewPaymentPlan = (debt) => {
-    // Sorun bu kısımda başlıyor(kendime not)
-    console.log("Selected Debt:", debt); // Console log ekledik
     dispatch(setSelectedDebt(debt));
     history.push(`/payment-plan`);
   };
@@ -45,9 +43,9 @@ const Debts = () => {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col items-center bg-gray-100">
+    <div className="w-full h-full flex flex-col items-center bg-gray-100">
       <h1 className="text-4xl font-bold my-6">Borçlar</h1>
-      <div className="w-full max-w-4xl flex flex-wrap justify-between gap-4">
+      <div className="w-full max-w-4xl flex flex-wrap justify-between gap-4 mb-4">
         <div className="w-full bg-white p-6 rounded-lg shadow-md">
           <div className="flex flex-col justify-between items-center">
             <FontAwesomeIcon
@@ -74,7 +72,7 @@ const Debts = () => {
               />
             </div>
             <p>{debt.lenderName}</p>
-            <p>{debt.debtAmount} ₺</p>
+            <p>{debt.amount} ₺</p>
             <div className="flex justify-end gap-2 mt-4">
               <button
                 className="p-2 bg-sky-500 rounded text-white hover:scale-105"

@@ -9,7 +9,6 @@ import WithAuth from "../components/WithAuth";
 const PaymentPlan = () => {
   const dispatch = useDispatch();
   const selectedDebt = useSelector((state) => state.debts.selectedDebt);
-  console.log("SELEEEECTED:", selectedDebt);
   const paymentPlan = useSelector((state) => state.debts.paymentPlan);
 
   useEffect(() => {

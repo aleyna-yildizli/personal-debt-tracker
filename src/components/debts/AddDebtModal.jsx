@@ -111,8 +111,6 @@ const AddDebtModal = ({ isOpen, toggle, isEdit }) => {
         paymentPlan: paymentPlan,
       };
 
-      console.log("Formatted Data:", formattedData);
-
       if (isEdit) {
         await dispatch(updateDebt(selectedDebt.id, formattedData));
       } else {
