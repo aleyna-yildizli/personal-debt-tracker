@@ -9,6 +9,7 @@ import WithAuth from "../components/WithAuth";
 const PaymentPlan = () => {
   const dispatch = useDispatch();
   const selectedDebt = useSelector((state) => state.debts.selectedDebt);
+  console.log("SELEEEECTED:", selectedDebt);
   const paymentPlan = useSelector((state) => state.debts.paymentPlan);
 
   useEffect(() => {
@@ -16,8 +17,8 @@ const PaymentPlan = () => {
     if (sid !== null && sid !== "") {
       dispatch(fetchPaymentPlans(sid));
     } else if (selectedDebt) {
-      dispatch(fetchPaymentPlans(selectedDebt.id));
-      localStorage.setItem("sid", selectedDebt.id);
+      dispatch(fetchPaymentPlans(selectedDebt));
+      localStorage.setItem("sid", selectedDebt);
     }
   }, [selectedDebt, dispatch]);
 

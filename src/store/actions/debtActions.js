@@ -27,8 +27,8 @@ export const fetchPaymentPlans = (debtId) => async (dispatch) => {
     try {
       const response = await API.get(`finance/payment-plans/${debtId}`);
       dispatch({ type: FETCH_PAYMENT_PLANS, payload: response.data });
-      console.log("Fetched Payment Plans: ", response.data); // Veriyi consola yazdır
-      return response.data; // Veriyi döndür
+      console.log("Fetched Payment Plans: ", response.data); 
+      return response.data; 
     } catch (error) {
       console.error('Error fetching payment plans:', error);
     }
@@ -60,7 +60,7 @@ export const updatePaymentStatus = (debtId, paymentDate, paymentAmount, paymentP
     }
   };
 
-// Borçları getirme eylemi
+// BORÇLARI GETİR
 export const fetchDebts = () => async (dispatch) => {
     try {
       const response = await API.get('/finance/debt');
