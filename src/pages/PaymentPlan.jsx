@@ -46,7 +46,6 @@ const PaymentPlan = () => {
       </div>
     );
   }
-
   return (
     <div className="w-full h-full flex flex-col items-center">
       <h1 className="text-4xl font-bold my-6">Ödeme Planı</h1>
