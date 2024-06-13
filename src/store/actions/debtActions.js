@@ -36,21 +36,21 @@ export const fetchPaymentPlans = (debtId) => async (dispatch) => {
 
 // Ödeme durumu güncelleme işlemi
 export const updatePaymentStatus = (debtId, paymentDate, paymentAmount, paymentPlanId, isPaid) => async (dispatch, getState) => {
-    const state = getState();
-    const selectedDebt = state.debts.debts.find(debt => debt.id === debtId);
-    const paymentPlan = selectedDebt.paymentPlan.find(plan => plan.id === paymentPlanId); //TODO try içine al
-    console.log("update payment plannnn:", paymentPlan);
     try {
+      const state = getState();
+      const selectedDebt = state.debts.debts.find(debt => debt.id === debtId);
+      const paymentPlan = selectedDebt.paymentPlan.find(plan => plan.id === paymentPlanId);
       const payload = {
         paymentDate: paymentDate,
         paymentAmount: paymentAmount,
         isPaid: isPaid,
       };
-      console.log("update payment plannnn:", paymentPlan);
-      console.log("Updating Payment Status for:", paymentPlanId, "with payload:", payload); // Debugging line
   
-      await API.put(`/finance/payment-plans/${paymentPlanId}`, payload);
-      
+      console.log("Update payment plan:", paymentPlan);
+      console.log("Updating Payment Status for:", paymentPlanId, "with payload:", payload);
+  
+      await API.put(`finance/payment-plans/${paymentPlanId}`, payload);
+  
       dispatch({
         type: UPDATE_PAYMENT_STATUS,
         payload: { debtId, paymentPlanId, isPaid }

@@ -7,10 +7,9 @@ import {
 import WithAuth from "../components/WithAuth";
 
 const PaymentPlan = () => {
+  const dispatch = useDispatch();
   const selectedDebt = useSelector((state) => state.debts.selectedDebt);
   const paymentPlan = useSelector((state) => state.debts.paymentPlan);
-  console.log("PAYMENT PLAN:", paymentPlan);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const sid = localStorage.getItem("sid");
@@ -28,7 +27,6 @@ const PaymentPlan = () => {
     paymentPlanId,
     isPaid
   ) => {
-    console.log("PaymentPlanId:", paymentPlanId, "isPaid:", isPaid);
     dispatch(
       updatePaymentStatus(
         selectedDebt.id,
@@ -55,7 +53,6 @@ const PaymentPlan = () => {
         <h2 className="text-xl font-semibold mb-4">{selectedDebt.debtName}</h2>
         <div className="space-y-4">
           {paymentPlan.map((plan, index) => {
-            console.log("Plan ID:", plan.id);
             return (
               <div
                 key={plan.id}
