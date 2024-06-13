@@ -1,11 +1,39 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React, { useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+  useHistory,
+} from "react-router-dom";
+import { useSelector } from "react-redux";
+import WithAuth from "./components/WithAuth";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import Dashboard from "./pages/Dashboard";
 import Debts from "./pages/Debts";
 import PaymentPlan from "./pages/PaymentPlan";
 import Header from "./components/layout/Header";
+
+const ProtectedDashboard = WithAuth(Dashboard);
+const ProtectedDebts = WithAuth(Debts);
+const ProtectedPaymentPlan = WithAuth(PaymentPlan);
+
+const HomeRedirect = () => {
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push("/dashboard");
+    } else {
+      history.push("/signup");
+    }
+  }, [isAuthenticated, history]);
+
+  return null;
+};
+
 function App() {
   return (
     <Router>
@@ -15,16 +43,17 @@ function App() {
           <Route path="/signup" component={RegisterPage} />
           <Route path="/dashboard" exact>
             <Header />
-            <Dashboard />
+            <ProtectedDashboard />
           </Route>
           <Route path="/debts" exact>
             <Header />
-            <Debts />
+            <ProtectedDebts />
           </Route>
           <Route path="/payment-plan" exact>
             <Header />
-            <PaymentPlan />
+            <ProtectedPaymentPlan />
           </Route>
+          <Route path="/" exact component={HomeRedirect} />
         </Switch>
       </div>
     </Router>

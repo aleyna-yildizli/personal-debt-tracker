@@ -5,7 +5,7 @@ import WithAuth from "../components/WithAuth";
 const Dashboard = () => {
   const debts = useSelector((state) => state.debts.debts);
 
-  const totalDebt = debts.reduce((total, debt) => total + debt.amount, 0);
+  const totalDebt = debts.reduce((total, debt) => total + debt.debtAmount, 0);
   const paidDebt = debts.reduce(
     (total, debt) =>
       total +
@@ -14,6 +14,8 @@ const Dashboard = () => {
         .reduce((sum, payment) => sum + payment.paymentAmount, 0),
     0
   );
+
+  console.log(debts);
   const upcomingPayments = debts
     .flatMap((debt) => debt.paymentPlan)
     .filter(

@@ -13,12 +13,14 @@ const PaymentPlan = () => {
   const paymentPlan = useSelector((state) => state.debts.paymentPlan);
 
   useEffect(() => {
-    const sid = localStorage.getItem("sid");
-    if (sid !== null && sid !== "") {
-      dispatch(fetchPaymentPlans(sid));
-    } else if (selectedDebt) {
-      dispatch(fetchPaymentPlans(selectedDebt));
-      localStorage.setItem("sid", selectedDebt);
+    if (selectedDebt) {
+      dispatch(fetchPaymentPlans(selectedDebt.id));
+      localStorage.setItem("sid", selectedDebt.id);
+    } else {
+      const sid = localStorage.getItem("sid");
+      if (sid !== null && sid !== "") {
+        dispatch(fetchPaymentPlans(sid));
+      }
     }
   }, [selectedDebt, dispatch]);
 
