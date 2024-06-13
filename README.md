@@ -12,12 +12,26 @@ Bu proje, React.js ve Redux kullanarak oluşturulmuş bir kişisel borç takip u
 - Redux kullanarak kalıcı durum yönetimi.
 - Borç ve ödeme planı yönetimi için backend entegrasyonu.
 
-## Kullanılan Teknolojiler
+## Kullanılan Teknolojiler ve Sürümleri
 
-- **Frontend**: React.js, Redux, Axios, Tailwind CSS
-- **UI Bileşenleri**: Bootstrap, Material Tailwind, React Bootstrap, React Icons
-- **Form Yönetimi**: React Hook Form
-- **Bildirimler**: React Toastify
+- **Vite**: ^5.2.0
+- **React**: ^18.2.0
+- **Redux**: ^5.0.1
+- **Redux Thunk**: ^3.1.0
+- **Redux Logger**: ^3.0.6
+- **Axios**: ^1.7.2
+- **React Hook Form**: ^7.51.5
+- **Tailwind CSS**: ^3.4.4
+- **Bootstrap**: ^5.3.3
+- **React Bootstrap**: ^2.10.2
+- **React Toastify**: ^10.0.5
+- **React Router**: ^5.3.4
+- **React Icons**: ^5.2.1
+- **React Gravatar**: ^2.6.3
+- **Material Tailwind**: ^2.1.9
+- **ESLint**: ^8.57.0
+- **PostCSS**: ^8.4.38
+- **FontAwesome**: ^6.5.2
 
 ## Kurulum ve Çalıştırma
 
