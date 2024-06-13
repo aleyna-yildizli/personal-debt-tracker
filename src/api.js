@@ -24,11 +24,3 @@ const renewAPI = () => {
 renewAPI();
 
 export { API, renewAPI };
-
-
-
-{/* 
-API yenileme işlemi, kullanıcı giriş yaptığında veya kayıt olduğunda alınan token'ın tüm isteklerde kullanılmasını sağlamak için yapılır.
- Bu, güvenliği ve geçerliliği sağlar. Yeni token alındığında, bu token'ı kullanacak şekilde 
-axios instance'ınızı yeniden yapılandırmak gereklidir. Bu nedenle, renewAPI fonksiyonu kullanılır ve yeni token alındığında API nesnesini günceller.
-*/}
