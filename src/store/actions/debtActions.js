@@ -9,13 +9,6 @@ export const UPDATE_PAYMENT_STATUS = 'UPDATE_PAYMENT_STATUS';
 export const FETCH_PAYMENT_PLANS = "FETCH_PAYMENT_PLANS";
 export const DELETE_DEBT = 'DELETE_DEBT';
 
-
-// merkezi loading
-export const setLoading = (isLoading) => ({
-    type: SET_LOADING,
-    payload: isLoading,
-  });
-
 // BORÇ EKLEME EYLEMİ
 export const addDebtAction = (debt) => ({
   type: ADD_DEBT, payload: debt,
@@ -69,6 +62,7 @@ export const updatePaymentStatus = (debtId, paymentDate, paymentAmount, paymentP
         type: UPDATE_PAYMENT_STATUS,
         payload: { debtId, paymentPlanId, isPaid }
       });
+      dispatch(fetchDebts());
     } catch (error) {
       //console.error('Error updating payment status:', error);
     }

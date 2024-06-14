@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import WithAuth from "../components/WithAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import AddDebtModal from "../components/debts/AddDebtModal";
+import AddDebtModal from "../components/form/AddDebtModal";
 import {
   setSelectedDebt,
   fetchDebts,

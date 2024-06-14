@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchDebts } from "../store/actions/debtActions";
 import WithAuth from "../components/WithAuth";
+import DebtChart from "../components/charts/DebtChart";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -90,6 +91,10 @@ const Dashboard = () => {
               </p>
             )}
           </div>
+        </div>
+        <div className="w-full max-w-4xl mt-8 bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold mb-4">Borç Durumu Grafiği</h2>
+          <DebtChart />
         </div>
       </div>
     </div>

@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect,
   useHistory,
 } from "react-router-dom";
 import { useSelector } from "react-redux";
