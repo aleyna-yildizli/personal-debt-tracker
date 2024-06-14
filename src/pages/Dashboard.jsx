@@ -37,10 +37,6 @@ const Dashboard = () => {
     return total + paidAmount;
   }, 0);
 
-  //console.log("Debts:", debts);
-  //console.log("Total Debt:", totalDebt);
-  //console.log("Paid Debt:", paidDebt);
-
   const upcomingPayments = debts
     .flatMap((debt) => debt.paymentPlan)
     .filter(
@@ -79,14 +75,20 @@ const Dashboard = () => {
             <h2 className="text-xl font-semibold flex text-center">
               Yaklaşan Ödeme Tarihleri
             </h2>
-            <ul className="list-disc ml-4">
-              {upcomingPayments.map((payment, index) => (
-                <li key={index} className="text-lg">
-                  {formatDate(payment.paymentDate)}:{" "}
-                  {formatAmount(payment.paymentAmount)} ₺
-                </li>
-              ))}
-            </ul>
+            {upcomingPayments.length > 0 ? (
+              <ul className="list-disc ml-4">
+                {upcomingPayments.map((payment, index) => (
+                  <li key={index} className="text-lg">
+                    {formatDate(payment.paymentDate)}:{" "}
+                    {formatAmount(payment.paymentAmount)} ₺
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-lg text-center">
+                Yaklaşan ödemeniz bulunmamaktadır.
+              </p>
+            )}
           </div>
         </div>
       </div>
