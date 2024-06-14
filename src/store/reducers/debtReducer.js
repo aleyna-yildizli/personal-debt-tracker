@@ -1,34 +1,13 @@
 import { ADD_DEBT, UPDATE_DEBT, SET_SELECTED_DEBT, FETCH_DEBTS, UPDATE_PAYMENT_STATUS, FETCH_PAYMENT_PLANS } from '../actions/debtActions';
-import { FETCH_REQUEST, FETCH_SUCCESS, FETCH_FAILURE } from '../actions/fetchActions';
 
 const initialState = {
   debts: [],
   paymentPlan: [],
   selectedDebt: null,
-  isLoading: false,
-  error: null,
 };
 
 const debtReducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_REQUEST:
-      return {
-        ...state,
-        isLoading: true,
-        error: null,
-      };
-    case FETCH_SUCCESS:
-      return {
-        ...state,
-        debts: action.payload,
-        isLoading: false,
-      };
-    case FETCH_FAILURE:
-      return {
-        ...state,
-        isLoading: false,
-        error: action.payload,
-      };
     case ADD_DEBT:
       return {
         ...state,

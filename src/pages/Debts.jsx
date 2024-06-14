@@ -43,7 +43,7 @@ const Debts = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center bg-gray-100">
+    <div className="w-full h-screen flex flex-col items-center bg-gray-100">
       <h1 className="text-4xl font-bold my-6">Borçlar</h1>
       <div className="w-full max-w-4xl flex flex-wrap justify-between gap-4 mb-4">
         <div className="w-full bg-white p-6 rounded-lg shadow-md">

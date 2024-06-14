@@ -14,6 +14,8 @@ import Dashboard from "./pages/Dashboard";
 import Debts from "./pages/Debts";
 import PaymentPlan from "./pages/PaymentPlan";
 import Header from "./components/layout/Header";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProtectedDashboard = WithAuth(Dashboard);
 const ProtectedDebts = WithAuth(Debts);
@@ -38,6 +40,7 @@ function App() {
   return (
     <Router>
       <div className="w-full">
+        <ToastContainer />
         <Switch>
           <Route path="/login" component={LoginPage} />
           <Route path="/signup" component={RegisterPage} />

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { API, renewAPI } from "../api";
 import { Link, useHistory } from "react-router-dom";
 import { Spinner } from "@material-tailwind/react";
+import { toast } from "react-toastify";
 
 export default function RegisterPage() {
   const {
@@ -38,10 +39,13 @@ export default function RegisterPage() {
       localStorage.setItem("token", response.data.token);
       renewAPI();
       setIsSubmitted(true);
+      toast.success("Başarıyla kayıt olundu!");
       history.push("/login");
     } catch (error) {
-      console.error(
-        "An error occurred while submitting the form. Please try again."
+      toast.error(
+        error.response && error.response.data && error.response.data.message
+          ? error.response.data.message
+          : "An error occurred while submitting the form. Please try again."
       );
       console.error(
         "Error details:",

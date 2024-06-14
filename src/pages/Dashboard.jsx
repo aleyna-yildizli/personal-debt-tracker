@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchDebts } from "../store/actions/debtActions";
 import WithAuth from "../components/WithAuth";
@@ -6,13 +6,19 @@ import WithAuth from "../components/WithAuth";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const debts = useSelector((state) => state.debts.debts);
-  const isLoading = useSelector((state) => state.debts.isLoading);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    const loadDebts = async () => {
+      setIsLoading(true);
+      await dispatch(fetchDebts());
+      setIsLoading(false);
+    };
+
     if (debts.length === 0) {
-      dispatch(fetchDebts());
+      loadDebts();
     }
-  }, [dispatch, debts]);
+  }, [dispatch, debts.length]);
 
   if (isLoading) {
     return (

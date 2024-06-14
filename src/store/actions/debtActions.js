@@ -1,5 +1,4 @@
 import { API } from '../../api';
-import { fetchFailure, fetchRequest, fetchSuccess } from './fetchActions';
 
 export const SET_LOADING = 'SET_LOADING';
 export const ADD_DEBT = 'ADD_DEBT';
@@ -60,13 +59,12 @@ export const updatePaymentStatus = (debtId, paymentDate, paymentAmount, paymentP
         payload: { debtId, paymentPlanId, isPaid }
       });
     } catch (error) {
-      console.error('Error updating payment status:', error);
+      //console.error('Error updating payment status:', error);
     }
   };
 
 // BORÇLARI GETİR
 export const fetchDebts = () => async (dispatch) => {
-    dispatch(fetchRequest());
     try {
       const response = await API.get('/finance/debt');
       const debtsWithPaymentPlan = await Promise.all(response.data.data.map(async (debt) => {
@@ -83,13 +81,13 @@ export const fetchDebts = () => async (dispatch) => {
           paymentPlan
         };
       }));
-      dispatch(fetchSuccess(debtsWithPaymentPlan));
-      console.log("Fetched Debts: ", debtsWithPaymentPlan);
+      dispatch({ type: FETCH_DEBTS, payload: debtsWithPaymentPlan });
+      //console.log("Fetched Debts: ", debtsWithPaymentPlan);
     } catch (error) {
-      console.error('Error fetching debts:', error);
-      dispatch(fetchFailure(error));
+      //console.error('Error fetching debts:', error);
     }
   };
+
 
   // ÖDEME PLANINI HESAPLA
 const calculatePaymentPlan = (debtAmount, amount, paymentStart, installment, existingPaymentPlan = []) => {
@@ -107,7 +105,7 @@ const calculatePaymentPlan = (debtAmount, amount, paymentStart, installment, exi
       paymentPlan.push({
         paymentDate: paymentDate.toISOString(),
         paymentAmount: monthlyAmount,
-        isPaid: existingPayment ? existingPayment.isPaid : false
+        isPaid: existingPayment ? existingPayment.isPaid : false 
       });
     }
   
@@ -136,7 +134,7 @@ export const addDebt = (data) => async (dispatch) => {
       await API.post('finance/debt', postData);
       dispatch(fetchDebts());
     } catch (error) {
-      console.error('Error adding debt:', error);
+      //console.error('Error adding debt:', error);
       throw error;
     }
   };
@@ -164,7 +162,7 @@ export const updateDebt = (debtId, data) => async (dispatch) => {
       //console.log("Update Debt Response: ", response.data);
       dispatch(fetchDebts());
     } catch (error) {
-      console.error('Error updating debt:', error);
+      //console.error('Error updating debt:', error);
       throw error;
     }
   };

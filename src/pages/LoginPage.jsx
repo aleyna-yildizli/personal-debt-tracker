@@ -7,9 +7,7 @@ import {
   faEye,
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
+import { toast } from "react-toastify";
 import { Link, useHistory } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { loginUser } from "../store/actions/userAction";
@@ -39,6 +37,7 @@ export default function LoginPage() {
     console.log("Form Submitted:", data);
     try {
       await dispatch(loginUser(data, history));
+      toast.success("Başarıyla giriş yapıldı!");
       setIsLoading(false);
     } catch (error) {
       console.error(
@@ -46,7 +45,9 @@ export default function LoginPage() {
         error.response ? error.response.data : error.message
       );
       toast.error(
-        error.response ? error.response.data.message : error.message,
+        error.response && error.response.data && error.response.data.message
+          ? error.response.data.message
+          : "Giriş işlemi sırasında bir hata oluştu. Lütfen tekrar deneyin.",
         {
           position: "top-right",
         }
@@ -57,7 +58,6 @@ export default function LoginPage() {
 
   return (
     <div className="w-full h-screen flex flex-col bg-[#e7f0fd] ">
-      <ToastContainer position="top-right" autoClose={5000} />
       <h2 className="absolute font-extrabold text-[199px] text-white opacity-50 right-[3%] top-[10%] hidden md:block ">
         Log in
       </h2>
