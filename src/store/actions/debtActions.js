@@ -7,6 +7,7 @@ export const SET_SELECTED_DEBT = 'SET_SELECTED_DEBT';
 export const FETCH_DEBTS = 'FETCH_DEBTS';
 export const UPDATE_PAYMENT_STATUS = 'UPDATE_PAYMENT_STATUS';
 export const FETCH_PAYMENT_PLANS = "FETCH_PAYMENT_PLANS";
+export const DELETE_DEBT = 'DELETE_DEBT';
 
 
 // merkezi loading
@@ -30,6 +31,16 @@ export const setSelectedDebt = (debt) => ({
   type: SET_SELECTED_DEBT, payload: debt,
 });
 
+// BORÇ SİL
+export const deleteDebt = (debtId) => async (dispatch) => {
+  try {
+    await API.delete(`/finance/debt/${debtId}`);
+    dispatch(fetchDebts());
+    dispatch({ type: DELETE_DEBT, payload: debtId });
+  } catch (error) {
+    console.error('Error deleting debt:', error);
+  }
+};
 
 export const fetchPaymentPlans = (debtId) => async (dispatch) => {
     try {

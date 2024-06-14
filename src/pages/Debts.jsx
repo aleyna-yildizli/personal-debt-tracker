@@ -3,9 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import WithAuth from "../components/WithAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import AddDebtModal from "../components/debts/AddDebtModal";
-import { setSelectedDebt, fetchDebts } from "../store/actions/debtActions";
+import {
+  setSelectedDebt,
+  fetchDebts,
+  deleteDebt,
+} from "../store/actions/debtActions";
 
 const Debts = () => {
   const debts = useSelector((state) => state.debts.debts) || [];
@@ -42,6 +46,10 @@ const Debts = () => {
     dispatch(setSelectedDebt(null));
   };
 
+  const handleDelete = (debt) => {
+    dispatch(deleteDebt(debt.id));
+  };
+
   return (
     <div className="w-full h-screen flex flex-col items-center bg-gray-100">
       <h1 className="text-4xl font-bold my-6">Borçlar</h1>
@@ -65,11 +73,18 @@ const Debts = () => {
           >
             <div className="flex justify-between">
               <h2 className="text-xl font-semibold">{debt.debtName}</h2>
-              <FontAwesomeIcon
-                icon={faEdit}
-                className="text-sky-500 cursor-pointer"
-                onClick={() => handleEditShow(debt)}
-              />
+              <div className="flex gap-2">
+                <FontAwesomeIcon
+                  icon={faEdit}
+                  className="text-sky-500 cursor-pointer"
+                  onClick={() => handleEditShow(debt)}
+                />
+                <FontAwesomeIcon
+                  icon={faTrash}
+                  className="text-sky-500 cursor-pointer"
+                  onClick={() => handleDelete(debt)}
+                />
+              </div>
             </div>
             <p>{debt.lenderName}</p>
             <p>{debt.amount} ₺</p>
