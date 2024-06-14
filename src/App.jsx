@@ -15,6 +15,7 @@ import PaymentPlan from "./pages/PaymentPlan";
 import Header from "./components/layout/Header";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Footer from "./components/layout/Footer";
 
 const ProtectedDashboard = WithAuth(Dashboard);
 const ProtectedDebts = WithAuth(Debts);
@@ -46,6 +47,7 @@ function App() {
           <Route path="/dashboard" exact>
             <Header />
             <ProtectedDashboard />
+            <Footer />
           </Route>
           <Route path="/debts" exact>
             <Header />

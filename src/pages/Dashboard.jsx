@@ -75,12 +75,12 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex-1 w-full h-screen flex flex-col bg-white">
-      <div className="flex-1 flex flex-col items-center">
-        <div className="w-full max-w-4xl grid grid-cols-2 gap-4 mb-4 my-6">
-          <div className=" p-6 rounded-lg shadow-md bg-sky-800">
+    <div className="flex-1 w-full h-screen flex flex-col bg-white my-10">
+      <div className="container mx-auto flex-1 flex flex-col items-center">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 m-4">
+          <div className="p-6 rounded-lg shadow-md bg-sky-800">
             <h2 className="text-lg font-semibold text-white">Toplam Borç</h2>
-            <p className="text-2xl font-bold text-white ">
+            <p className="text-2xl font-bold text-white">
               {totalDebt.toFixed(2)} ₺
             </p>
           </div>
@@ -104,7 +104,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="w-full max-w-4xl grid grid-cols-2 gap-4 mb-4">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div className="bg-amber-200 p-6 rounded-lg shadow-md">
             <h2 className="text-lg font-semibold text-white">
               Yaklaşan Ödeme Tarihleri
@@ -143,7 +143,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="w-full max-w-4xl mt-8 bg-white p-6 rounded-lg shadow-md mb-10">
+        <div className="w-full bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-4">Borç Durumu Grafiği</h2>
           <DebtChart debts={debts} />
         </div>
