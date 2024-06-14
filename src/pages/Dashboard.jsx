@@ -29,8 +29,10 @@ const Dashboard = () => {
     );
   }
 
+  // Toplam borç miktarı
   const totalDebt = debts.reduce((total, debt) => total + debt.amount, 0);
 
+  // Ödenen borç miktarı
   const paidDebt = debts.reduce((total, debt) => {
     const paidAmount = debt.paymentPlan
       .filter((payment) => payment.isPaid)
@@ -38,12 +40,20 @@ const Dashboard = () => {
     return total + paidAmount;
   }, 0);
 
+  // Kalan borç miktarı
   const remainingDebt = totalDebt - paidDebt;
 
+  // Toplam taksit sayısı
   const totalInstallments = debts.reduce((total, debt) => {
-    return total + debt.paymentPlan.length;
+    return total + debt.installment;
   }, 0);
 
+  // Ortalama Aylık Ödeme Tutarı
+  const averageMonthlyPayment = totalInstallments
+    ? totalDebt / totalInstallments
+    : 0;
+
+  // Yaklaşan ödeme tarihleri
   const upcomingPayments = debts
     .flatMap((debt) => debt.paymentPlan)
     .filter(
@@ -52,6 +62,7 @@ const Dashboard = () => {
     .sort((a, b) => new Date(a.paymentDate) - new Date(b.paymentDate))
     .slice(0, 5);
 
+  // Ödeme geçmişi
   const paymentHistory = debts
     .flatMap((debt) =>
       debt.paymentPlan
@@ -75,8 +86,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex-1 w-full h-screen flex flex-col bg-white my-10">
-      <div className="container mx-auto flex-1 flex flex-col items-center">
+    <div className="flex-1 w-full min-h-screen flex flex-col bg-white my-10">
+      <div className="container mx-auto flex-1 flex flex-col items-center px-4">
         <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 m-4">
           <div className="p-6 rounded-lg shadow-md bg-sky-800">
             <h2 className="text-lg font-semibold text-white">Toplam Borç</h2>
@@ -98,9 +109,11 @@ const Dashboard = () => {
           </div>
           <div className="p-6 rounded-lg shadow-md bg-emerald-300">
             <h2 className="text-lg font-semibold text-white">
-              Toplam Taksit Sayısı
+              Ortalama Aylık Ödemeler
             </h2>
-            <p className="text-2xl font-bold text-white">{totalInstallments}</p>
+            <p className="text-2xl font-bold text-white">
+              {averageMonthlyPayment.toFixed(2)} ₺
+            </p>
           </div>
         </div>
 
@@ -143,7 +156,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="w-full bg-white p-6 rounded-lg shadow-md">
+        <div className="w-full bg-white p-6 rounded-lg shadow-md mt-4">
           <h2 className="text-xl font-semibold mb-4">Borç Durumu Grafiği</h2>
           <DebtChart debts={debts} />
         </div>
