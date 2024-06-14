@@ -104,7 +104,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-amber-200 p-6 rounded-lg shadow-md">
             <h2 className="text-lg font-semibold text-white">
               Yaklaşan Ödeme Tarihleri
