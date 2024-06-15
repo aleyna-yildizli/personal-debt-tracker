@@ -149,7 +149,7 @@ const Dashboard = () => {
                 ))}
               </ul>
             ) : (
-              <p className="text-lg text-center text-white">
+              <p className="text-lg font-semibold text-white">
                 Ödeme geçmişiniz bulunmamaktadır.
               </p>
             )}
